@@ -10,7 +10,8 @@ A simple webpage for those who want to see their cards digitally.
 - Filter by Set, Rarity, Artist Name, Type, and Count
   - Users can add one more filter as they want
 - Sorting
-  - By Card Name, by Artist Name, by Release Date, by Rarity, by Type, by Foil, and by Price
+  - By Artist Name, by Card Name, by Count, by Foil, by Price, by Release Date, by Rarity, and by Type
+  - Foil sorting works only when a user uses the Foil column with "Holo", "Reverse", and "Non-Holo".
 ### Toggle Card Information
 ![cards_toggle](https://github.com/user-attachments/assets/9b850611-1424-421b-8bdb-b3dab25c35e8)
 ### Show Stats of Cards

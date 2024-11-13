@@ -569,6 +569,8 @@ function sortAndDisplayCards() {
             compare = typeOrder.indexOf(a.types?.[0] || a.subtypes?.[0] || '') - typeOrder.indexOf(b.types?.[0] || b.subtypes?.[0] || '');
         } else if (sortBy === 'foil') {
             compare = foilOrder.indexOf(a.foil || '') - foilOrder.indexOf(b.foil || '');
+        } else if (sortBy === 'count') {
+            compare = (b.count || 0) - (a.count || 0);
         }
         return compare * sortOrder;
     });

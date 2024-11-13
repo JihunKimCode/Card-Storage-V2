@@ -77,6 +77,10 @@ h1 a{
     color: var(--text);
 }
 
+input {
+    color: var(--text);
+}
+
 #controls {
     display: flex;
     justify-content: space-between;
@@ -86,6 +90,10 @@ h1 a{
 
 #filters, #sorting {
     display: flex;
+}
+
+#sort-by option:first-child {
+    background-color: var(--footer);
 }
 
 .card {
