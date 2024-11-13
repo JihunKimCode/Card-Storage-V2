@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta property="og:url" content="https://jihunkimcode.github.io/Card-Storage/">
+    <meta property="og:title" content="Pokémon Card Storage">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/plasma-card.png">
+    <meta property="og:description" content="A simple webpage for those who wants to see their own cards in digital.">
+
+    <meta name="author" content="Jihun Kim">
+    <meta name="keywords" content="Pokémon, Pokémon Card, Pokémon Card Illustrations">
+    <meta name="description" content="Illustrations of Pokémon Cards">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/plasma-card.png">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Card Storage</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>
+        <a href="https://github.com/JihunKimCode/Card-Storage" class="btn btn-github" rel="noopener noreferrer" aria-label="GitHub Repository">
+            <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="./index.html" rel="noopener noreferrer" aria-label="GitHub Repository">Pokémon Card Storage</a>
+    </h1>    
+    <div id="loading-bar-container">
+        <div id="loading-bar"></div>
+        <div id="loading-context">Waiting for CSV...</div>
+    </div>
+
+    <div id="controls">
+        <div id="filters">
+            <select id="set-filter">
+                <option value="">🔍Set</option>
+            </select>
+            <select id="rarity-filter">
+                <option value="">🔍Rarity</option>
+            </select>
+            <select id="artist-filter">
+                <option value="">🔍Artist</option>
+            </select>
+            <select id="type-filter">
+                <option value="">🔍Type</option>
+            </select>        
+            <select id="holo-filter">
+                <!-- <option value="">🔍Foil</option> -->
+            </select>
+            <select id="count-filter">
+                <option value="">🔍Count</option>
+            </select>                                
+        </div>
+        <div id="sorting">
+            <button id="statsButton" title="Show card stats"><i class="fa-solid fa-chart-column"></i></button>
+            <button id="visibleButton" title="Toggle card info"><i class="fa-solid fa-eye"></i></button>
+            <select id="sort-by">
+                <option value="">Sort By</option>
+                <option value="name">Card Name</option>
+                <option value="artist">Artist Name</option>
+                <option value="releaseDate">Release Date</option>
+                <option value="rarity">Rarity</option>
+                <option value="type">Type</option>
+                <option value="foil">Foil</option>
+                <option value="price">Price</option>
+            </select>
+            <button id="order-toggle" title="Toggle sort order"><i class="fa-solid fa-arrow-down-short-wide"></i></button>
+        </div>
+    </div>
+
+    <div id="alert">
+        <input type="file" id="file-input" accept=".csv" onchange="handleFileUpload(event)">
+        <p>
+            <li><b><a href="https://github.com/JihunKimCode/Card-Storage/blob/main/pokemon_cards.csv" rel="noopener noreferrer" aria-label="pokemon_cards.csv" target="_blank">Template CSV</a></b></li>
+            <li>CSV must have a <b>Set and Number</b> for each card.</li>
+            <li>You can customize or remove the <b>Foil column</b> of the template as you like.</li>
+        </p>
+    </div>
+    <div id="card-container"></div>
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="statsContent"></div>
+            <div class="chart-container">
+                <canvas id="setChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="rarityChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="supertypeChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="typeChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="foilChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="illustratorChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div id="popup" class="popup">
+        <span class="close">&times;</span>
+        <img class="popup-content" id="popupImage" alt="Popup Image">
+    </div>
+
+    <div class="scroll-top" id="scroll-top" onclick="scrollToTop()">
+        <i class="fa-solid fa-chevron-up"></i>
+    </div>
+</body>
+<footer>
+    <div class="footerContent">
+        <div class="footicons">
+            <a class="btn btn-dark" onclick="darkmode()" aria-label="Toggle Dark Mode">
+                <i class="fa-solid fa-circle-half-stroke"></i>
+            </a>
+        </div>
+        <div class="credit">
+            <p>
+                Images and data are sourced from
+                <a href="https://pokemontcg.io/" target="_blank" rel="noopener noreferrer">Pokémon TCG Developers</a>.
+                <br>©<span id="year"></span> Pokémon. ©1995 - <span id="year2"></span> Nintendo/Creatures Inc./GAME FREAK inc. TM, ®Nintendo.
+            </p>
+        </div>
+    </div>
+</footer>
+<script src="script.js"></script>
+</html>
