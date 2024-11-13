@@ -4,13 +4,13 @@ A simple webpage for those who want to see their cards digitally.
 
 ## How to Use
 - Upload CSV so you can see your cards digitally.
-- Use this [CSV template](https://github.com/JihunKimCode/Card-Storage-V2/blob/main/pokemon_cards_v2.csv)
+- Use this [CSV template](https://github.com/JihunKimCode/Card-Storage-V2/blob/main/pokemon_cards_v2.csv).
 
 ## Features
-- Filter by Set, Rarity, Artist Name, Type, and Count
-  - Users can add one more filter as they want
+- Filter by Set, Rarity, Artist Name, Type, and Count.
+  - Users can add one more filter as they want.
 - Sorting
-  - By Artist Name, by Card Name, by Count, by Foil, by Price, by Release Date, by Rarity, and by Type
+  - By Artist Name, by Card Name, by Count, by Foil, by Price, by Release Date, by Rarity, and by Type.
   - Foil sorting works only when a user uses the Foil column with "Holo", "Reverse", and "Non-Holo".
 ### Toggle Card Information
 ![cards_toggle](https://github.com/user-attachments/assets/9b850611-1424-421b-8bdb-b3dab25c35e8)
