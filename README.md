@@ -5,6 +5,8 @@ A simple webpage for those who want to see their cards digitally.
 ## How to Use
 - Upload CSV so you can see your cards digitally.
 - Use this [CSV template](https://github.com/JihunKimCode/Card-Storage-V2/blob/main/pokemon_cards_v2.csv).
+  - CSV must have a **Set Name and Number** for each card.
+  - Users can customize or remove the **Foil column** of the template as you like.
 
 ## Features
 - Filter by Set, Rarity, Artist Name, Type, and Count.
