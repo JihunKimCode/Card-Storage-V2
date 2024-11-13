@@ -1,4 +1,4 @@
-# [Pokémon Card Storage](https://jihunkimcode.github.io/Card-Storage-V2/)
+# [Pokémon Card Storage V2](https://jihunkimcode.github.io/Card-Storage-V2/)
 ![cards](https://github.com/user-attachments/assets/0010b518-e5b5-4066-9659-2110e4e7d701)
 A simple webpage for those who want to see their cards digitally.
 
