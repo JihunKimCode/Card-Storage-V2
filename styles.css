@@ -92,6 +92,15 @@ input {
     display: flex;
 }
 
+#set-filter option:first-child,
+#rarity-filter option:first-child,
+#artist-filter option:first-child,
+#type-filter option:first-child,
+#holo-filter option:first-child,
+#count-filter option:first-child {
+    background-color: var(--footer);
+}
+
 #sort-by option:first-child {
     background-color: var(--footer);
 }
