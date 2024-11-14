@@ -15,9 +15,9 @@ const holoFilter = document.getElementById('holo-filter');
 const countFilter = document.getElementById('count-filter');
 
 // URLs
-const csvUrl = 'https://raw.githubusercontent.com/JihunKimCode/Card-Storage/main/pokemon_cards.csv';
 const apiUrl = 'https://api.pokemontcg.io/v2/';
 
+// Arrays and Variables
 let cardsData = [];
 let csvData = [];
 let filteredCards = [];
@@ -78,8 +78,8 @@ async function fetchCSVData(file) {
         // Parse CSV rows and count duplicates
         const uniqueCards = [];
         lines.slice(1).forEach(line => {
-            const [set, number, foil] = line.split(',').map(item => item.trim()); // Ignore count column if present
-            const cardKey = `${set}-${number}-${foil || ''}`; // Unique key based on set, number, and foil
+            const [set, number, foil] = line.split(',').map(item => item.trim()); 
+            const cardKey = `${set}-${number}-${foil || ''}`; 
             
             // Increment the count for each unique card combination
             cardCount[cardKey] = (cardCount[cardKey] || 0) + 1;
@@ -97,20 +97,11 @@ async function fetchCSVData(file) {
         }));
     } catch (error) {
         alert('Error fetching CSV data: ' + error.message);
-        throw error; // Rethrow the error to propagate it further if needed
+        throw error;
     }
 }
 
 // Fetch to each sets
-async function fetchSetData(setName) {
-    const formattedSetName = setName.replace(/\s/g, '.');
-    const response = await fetch(`${apiUrl}cards?q=set.name:${formattedSetName}`);
-    const data = await response.json();
-    cardsData = cardsData.concat(data.data);
-}
-
-const cache = {};
-
 async function fetchAllSets() {
     loadingContext.innerText = 'Fetching Sets...';
 
@@ -127,9 +118,8 @@ async function fetchAllSets() {
             }
             const data = await response.json();
 
-            // Assuming the first card in data.data belongs to the correct set, extract set.id
             if (data.data && data.data.length > 0) {
-                // Iterate over all items in data.data to collect all unique set IDs for the set name
+                // Iterate over all items to collect all unique set IDs for the set name
                 data.data.forEach(item => {
                     const setId = item.set.id;
                     
@@ -168,12 +158,47 @@ async function fetchAllSets() {
     }, 2000);
 
     filteredCards = csvData;
-    await createDisplayCardsData();
+    await createDisplayCardsData(cardsData);
     displayCards();
     updateCSVData();
     populateFilters();
 }
 
+// Find cards in data
+async function findCardBySetAndNumber(set, number, cardsDeck) {
+    // Get all possible set IDs for the set name
+    let setIds = setNameToIdMap[set];
+    if (set === "151") setIds = ["sv3pt5"]; // Manually assign for 151
+    if (!setIds || setIds.length === 0) {
+        console.error(`Set ID not found for set: ${set}`);
+        return null; // Return null if no ID mapping is found for the set
+    }
+
+    const match = number.match(/^[A-Za-z]+/); // Match any letters at the start of the string
+    const prefix = match ? match[0].toLowerCase() : ''; // Convert prefix to lowercase if it exists
+
+    let card = null;
+
+    // Try each setId until a matching card is found
+    for (const setId of setIds) {
+        const id = `${setId}${prefix}-${number}`;
+        card = cardsDeck.find(c => c.id === id && (c.set.name === set || c.set.name.includes(set)));
+
+        if (card) return card;
+    }
+
+    // Try to fetch the card if it wasn't found in cardsData
+    for (const setId of setIds) {
+        const id = `${setId}${prefix}-${number}`;
+        card = await fetchIndivCard(id);
+        if (card) return card;
+    }
+
+    console.error(`Card not found with set: ${set}, number: ${number}`);
+    return null; // Return null if no card was found
+}
+
+// Fetch Individual card if the card is not in a set
 async function fetchIndivCard(id) {
     try {
         let response = await fetch(`${apiUrl}cards/${id}`);
@@ -182,7 +207,6 @@ async function fetchIndivCard(id) {
         
         let data = await response.json();
 
-        // Check if data.data exists rather than checking length
         return data.data ? data.data : null;
     } catch (error) {
         console.error('Error fetching card by ID:', error);
@@ -190,7 +214,8 @@ async function fetchIndivCard(id) {
     }
 }
 
-async function createDisplayCardsData() {
+// Fetch each card to display cards
+async function createDisplayCardsData(cardsDeck) {
     displayCardsData = []; // Clear previous data
     for (const { set, number, foil, count } of filteredCards) {
         if (!number) {
@@ -198,43 +223,14 @@ async function createDisplayCardsData() {
             continue; // Skip this card
         }
         
-        // Get all possible set IDs for the set name
-        let setIds = setNameToIdMap[set];
-        if(set == "151") setIds = ["sv3pt5"]; // Manually assign for 151
-        if (!setIds || setIds.length === 0) {
-            console.error(`Set ID not found for set: ${set}`);
-            continue; // Skip if no ID mapping is found for the set
-        }
-
-        const match = number.match(/^[A-Za-z]+/); // Match any letters at the start of the string
-        const prefix = match ? match[0].toLowerCase() : ''; // Convert prefix to lowercase if it exists
-
-        let card = null;
-
-        // Try each setId until a matching card is found
-        for (const setId of setIds) {
-            const id = `${setId}${prefix}-${number}`;
-            card = cardsData.find(c => c.id === id && (c.set.name === set || c.set.name.includes(set)));
-            
-            if (card) break; // Exit the loop if a matching card is found
-        }
-
-        if (!card) {
-            // Try to fetch the card if it wasn't found in cardsData
-            for (const setId of setIds) {
-                const id = `${setId}${prefix}-${number}`;
-                card = await fetchIndivCard(id);
-                if (card) break; // Exit the loop if a matching card is found
-            }
-        }
-
+        let card = await findCardBySetAndNumber(set, number, cardsDeck);
         if (card) {
             // Store additional information
             const releaseDate = card.set.releaseDate || '';
             const price = getPrice(card) || 0;
             displayCardsData.push({ ...card, releaseDate, price, foil, count });
         } else {
-            console.error(`Card not found with number: ${number} in set: ${set}`);
+            console.error(`Card not found with set: ${set}, number: ${number}`);
         }
     }
 
@@ -242,42 +238,24 @@ async function createDisplayCardsData() {
 }
 
 // Function to update csvData with additional properties based on displayCardsData
-function updateCSVData() {
-    csvData = csvData.map(csvCard => {
-        // Get all possible set IDs for the set name
-        let setIds = setNameToIdMap[csvCard.set] || []; // Defaults to an empty array if no IDs are found
-        if(csvCard.set == "151") setIds = ["sv3pt5"]; // Manually assign for 151
-
-        // Match any letters at the start of the number for the prefix
-        const match = csvCard.number.match(/^[A-Za-z]+/);
-        const prefix = match ? match[0].toLowerCase() : '';
-
-        let matchingCard = null;
-
-        // Try to find a matching card using each possible setId
-        for (const setId of setIds) {
-            const id = `${setId}${prefix}-${csvCard.number}`;
-
-            matchingCard = displayCardsData.find(
-                displayCard => 
-                    displayCard.id === id &&
-                    (displayCard.set.name === csvCard.set || displayCard.set.name.includes(csvCard.set))
-            );
-
-            if (matchingCard) break; // Stop if a matching card is found
-        }
+async function updateCSVData() {
+    csvData = await Promise.all(csvData.map(async csvCard => {
+        const { set, number } = csvCard;
+        
+        // Find matching card
+        const matchingCard = await findCardBySetAndNumber(set, number, displayCardsData);
 
         // If a matching card is found, add the missing properties to csvCard
         if (matchingCard) {
             csvCard.rarity = matchingCard.rarity || "N/A";
             csvCard.artist = matchingCard.artist || "N/A";
-            csvCard.type = matchingCard.types?.[0] || matchingCard.subtypes?.[0] || "N/A"; // Fallback to subtypes if types is not available
+            csvCard.type = matchingCard.types?.[0] || matchingCard.subtypes?.[0] || "N/A";
         } else {
-            console.error(`No matching card found for set: ${csvCard.set}, number: ${csvCard.number}`);
+            console.error(`No matching card found for set: ${set}, number: ${number}`);
         }
 
         return csvCard;
-    });
+    }));
 }
 
 // Fill the card container
@@ -357,6 +335,7 @@ function showPopup(image, name) {
     };
 }
 
+// Window Scroll Button
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -457,6 +436,7 @@ function populateFilters() {
     });
 }
 
+// Apply Filters
 document.getElementById('rarity-filter').addEventListener('change', applyFilters);
 document.getElementById('set-filter').addEventListener('change', applyFilters);
 document.getElementById('type-filter').addEventListener('change', applyFilters);
@@ -488,56 +468,8 @@ async function applyFilters() {
                (!countFilterValue || card.count == countFilterValue);
     });
 
-    // Clear and populate displayCardsData based on filteredCards
-    displayCardsData = [];
-        for (const { set, number, foil, count } of filteredCards) {
-        if (!number) {
-            console.error('Card number is blank or undefined');
-            continue; // Skip this card
-        }
-        
-        // Get all possible set IDs for the set name
-        let setIds = setNameToIdMap[set];
-        if(set == "151") setIds = ["sv3pt5"]; // Manually assign for 151
-        if (!setIds || setIds.length === 0) {
-            console.error(`Set ID not found for set: ${set}`);
-            continue; // Skip if no ID mapping is found for the set
-        }
-
-        const match = number.match(/^[A-Za-z]+/); // Match any letters at the start of the string
-        const prefix = match ? match[0].toLowerCase() : ''; // Convert prefix to lowercase if it exists
-
-        let card = null;
-
-        // Try each setId until a matching card is found
-        for (const setId of setIds) {
-            const id = `${setId}${prefix}-${number}`;
-            card = cachedCardsData.find(c => c.id === id && (c.set.name === set || c.set.name.includes(set)));
-            
-            if (card) break; // Exit the loop if a matching card is found
-        }
-
-        if (!card) {
-            // Try to fetch the card if it wasn't found in cardsData
-            for (const setId of setIds) {
-                const id = `${setId}${prefix}-${number}`;
-                card = await fetchIndivCard(id);
-                if (card) break; // Exit the loop if a matching card is found
-            }
-        }
-
-        if (card) {
-            // Store additional information
-            const releaseDate = card.set.releaseDate || '';
-            const price = getPrice(card) || 0;
-            displayCardsData.push({ ...card, releaseDate, price, foil, count });
-        } else {
-            console.error(`Card not found with number: ${number} in set: ${set}`);
-        }
-    }
-
-
     // Display updated data
+    await createDisplayCardsData(cachedCardsData);
     sortAndDisplayCards();
     enableFilters();
 }
@@ -574,11 +506,12 @@ function sortAndDisplayCards() {
         }
         return compare * sortOrder;
     });
-
+    
     displayCards();
     enableFilters(); // Re-enable filters after sorting
 }
 
+// SortOrder Toggle Button
 const sortBySelect = document.getElementById('sort-by');
 const orderToggleBtn = document.getElementById('order-toggle');
 let currentIcon = 'fa-arrow-down-short-wide';
@@ -615,6 +548,7 @@ orderToggleBtn.addEventListener('click', () => {
 
 sortBySelect.addEventListener('change', updateIcon);
 
+// Visibility Toggle Button
 document.getElementById('visibleButton').addEventListener('click', toggleVisibility);
 
 document.addEventListener('keydown', function(event) {
