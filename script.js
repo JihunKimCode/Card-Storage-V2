@@ -107,9 +107,11 @@ async function fetchAllSets() {
 
     const sets = [...new Set(csvData.map(card => card.set))];
     const validSets = sets.filter(set => set !== "N/A" && set !== undefined);
+    const totalSets = validSets.length; // Total number of sets to process
+    let completedSets = 0;              // Counter for processed sets
 
-    // Prepare an array of fetch promises with error handling
-    const fetchPromises = validSets.map(async (set) => {
+    // Create an async iterator that fetches each set and updates progress dynamically
+    const fetchIterator = validSets.map(async (set) => {
         const formattedSetName = set.replace(/\s/g, '.');
         try {
             const response = await fetch(`${apiUrl}cards?q=set.name:${formattedSetName}`);
@@ -124,38 +126,35 @@ async function fetchAllSets() {
                     const setId = item.set.id;
                     
                     // Initialize an array for this set name if it doesn't already exist
-                    if (!setNameToIdMap[set]) {
-                        setNameToIdMap[set] = [];
-                    }
-                    
+                    if (!setNameToIdMap[set]) setNameToIdMap[set] = [];
+
                     // Add the setId to the array if it's not already included
-                    if (!setNameToIdMap[set].includes(setId)) {
-                        setNameToIdMap[set].push(setId);
-                    }
+                    if (!setNameToIdMap[set].includes(setId)) setNameToIdMap[set].push(setId);
                 });
             }
-                        
+
             return data.data;
         } catch (error) {
             console.error(error);
             return []; // Return an empty array on error
+        } finally {
+            // Increment progress and update UI
+            completedSets += 1;
+            const percentage = Math.round((completedSets / totalSets) * 100);
+            loadingBar.style.width = `${percentage}%`;
+            loadingContext.innerText = `${percentage}%`;
         }
     });
 
-    // Execute fetch requests in parallel and gather results
-    const setDataArrays = await Promise.all(fetchPromises);
+    // Use Promise.all to run all fetch operations in parallel
+    const setDataArrays = await Promise.all(fetchIterator);
 
     // Flatten the array of arrays into a single array
     const allSetData = setDataArrays.flat();
     cardsData = cardsData.concat(allSetData);
 
-    // Update the progress bar and UI
-    loadingBar.style.width = '0%';
-    loadingContext.innerText = 'Fetched All Sets!';
-
-    setTimeout(() => {
-        loadingContext.innerText = 'Displaying Cards...';
-    }, 2000);
+    // Finalize UI
+    loadingBar.style.width = '100%';
 
     filteredCards = csvData;
     await createDisplayCardsData(cardsData);
