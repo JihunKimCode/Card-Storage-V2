@@ -62,8 +62,7 @@ function clearSearchQuery() {
 const random = document.getElementById('randomButton');
 function performRandomSearch(){
     const randomIndex = Math.floor(Math.random() * pokemonNames.length);
-    const randomPokemon = pokemonNames[randomIndex];
-    searchQuery.value = randomPokemon;
+    searchQuery.value = pokemonNames[randomIndex];
     toggleClearButton();
     applyFilters();
 }
@@ -73,7 +72,7 @@ random.addEventListener('click', () => {
 });
 
 document.addEventListener("keydown", (event) => {
-    if (event.key.toLowerCase() === '`') {
+    if (!event.altKey && event.key.toLowerCase() === '`') {
         event.preventDefault();
         if(pokemonNames.length > 0) performRandomSearch();
     }
