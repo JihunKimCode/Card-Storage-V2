@@ -83,6 +83,14 @@ searchQuery.addEventListener('input',()=>{
     if(pokemonNames.length > 0 && searchQuery.value.length === 0) applyFilters();
 });
 
+// Move to search bar when input "/"
+document.addEventListener('keydown', function (event) {
+    if (event.key === '/') {
+      event.preventDefault();
+      searchQuery.focus();
+    }
+});
+
 // Dropdown menu
 let currentFocus = -1;
 let pokemonNames = [];
@@ -524,9 +532,21 @@ function createCardElement(card) {
     cardDiv.innerHTML = `
         <img src="${card.images.small}" alt="${card.name}" title="${card.name}" onclick="showPopup('${card.images.large}', '${card.name.replace(/'/g, '’')}')" style="cursor: zoom-in">
         <div class="cardInfo" style="display: ${isVisible ? 'block' : 'none'};">
-            <img src="${card.set.images.logo}" alt="${card.set.name}" title="${card.set.name}" style="width: 100px; cursor: default">
-            <p><b>${card.name}${holoSymbol}${countText}</b></p>
-            <p><i>Illus. ${card.artist || 'N/A'}</i></p>
+            <a href="https://jihunkimcode.github.io/Pokemon-Card-Searcher/?searchMode=setList&searchQuery=${encodeURIComponent(card.set.name)}&sortOrder=newest&supertypeFilter=&rarityFilter=" target="_blank">
+                <img src="${card.set.images.logo}" alt="${card.set.name}" title="${card.set.name}" style="width: 100px; cursor: pointer">
+            </a>    
+            <p>
+                <a href="https://jihunkimcode.github.io/Pokemon-Card-Searcher/?searchMode=pokemonName&searchQuery=${encodeURIComponent(card.name)}&sortOrder=newest&supertypeFilter=&rarityFilter=" target="_blank">
+                    <b>${card.name}${holoSymbol}${countText}</b>
+                </a>
+            </p>
+            <p><i>Illus. ${
+                card.artist && card.artist !== 'N/A' 
+                    ? `<a href="https://jihunkimcode.github.io/Pokemon-Card-Searcher/?searchMode=artistName&searchQuery=${encodeURIComponent(card.artist)}&sortOrder=newest&supertypeFilter=&rarityFilter=" target="_blank">
+                    ${card.artist}
+                    </a>` 
+                    : 'N/A'
+            }</i></p>
             <p>${card.releaseDate || 'N/A'}</p>
             <p>${card.rarity || 'N/A'}</p>
             <p>
