@@ -14,13 +14,15 @@
     --popup: rgba(0, 0, 0, 0.7);
     --dark-gray: #aaa;
     --stat: #fff;
+    --clear-button-hover: rgba(207, 207, 207);
+    --clear-button-active: rgba(169, 169, 169);
 }
 
 .dark-mode {
     --background: #121212;
     --loading-bar: #000;
     --text: #fff;
-    --border: #c2c2c2;
+    --border: #a6a6a6;
     --button: #fff;
     --button-icon: #000;
     --footer: #a6a6a6;
@@ -32,6 +34,8 @@
     --popup: rgba(0, 0, 0, 0.7);
     --dark-gray: #aaa;
     --stat: #ccc;
+    --clear-button-hover: rgba(207, 207, 207);
+    --clear-button-active: rgba(169, 169, 169);
 }
 
 body {
@@ -67,9 +71,17 @@ body {
     background: var(--gray-hover);  
 }
 
+.top-bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
 h1{
     margin-left: 20px;
     color: var(--text);
+    margin-block-end: 10px;
 }
 
 h1 a{
@@ -77,15 +89,139 @@ h1 a{
     color: var(--text);
 }
 
+/*Search Bar*/
+.searcher {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 36px;
+    margin-right: 25px;
+}
+
+.search-input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#searchQuery, #clearButton, #fetchButton, #randomButton {
+    height: 36px;
+    box-sizing: border-box;
+}
+
+input[type="text"]{
+    padding: 6px;
+    font-size: 16px;
+    color: #000;
+    border: none;
+    width: 169px;
+    border-top: 2px solid var(--border);
+    border-left: 2px solid var(--border);
+    border-bottom: 2px solid var(--border);  
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    outline: none;
+}
+
+#clearButton {
+    display: none;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 0px;
+    background-color: #fff;
+
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    padding: 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+}
+
+#clearButton:hover {
+    background-color: var(--clear-button-hover);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    box-shadow: none;
+}
+
+#clearButton:active {
+    background-color: var(--clear-button-active);
+    transition: background-color 0.3s ease;
+}
+
+#clearButton i {
+    font-size: 12px; /* Adjust according to the button size */
+}
+
+#fetchButton, #randomButton{
+    width: 32px;
+    float: right;
+    padding: 6px 0px;
+    margin-right: 0px;
+    background: var(--gray);
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+}
+
+#fetchButton:hover, #randomButton:hover{
+    background-color: var(--dark-gray);
+    color: white;
+    box-shadow: none;
+    transform: none;
+}
+
+#fetchButton{
+    border-radius: 0px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: 2px solid var(--border);
+    border-right: 2px solid var(--border);
+    border-bottom: 2px solid var(--border); 
+}
+
+#randomButton{
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 2px solid var(--border);
+}
+
+#pokemonDropdown {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    max-height: 190px;
+    overflow-y: auto;
+    z-index: 3;
+    top: calc(100% - 2px); /* Position the dropdown below the search input */
+    width: 169px;
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2);
+}
+
+#pokemonDropdown div{
+    padding: 10px;
+    cursor: pointer;
+}
+
+#pokemonDropdown div.active {
+    background-color: #ddd;
+}
+
 input {
     color: var(--text);
 }
 
+/*Filters*/
 #controls {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    margin: 20px;
+    margin: 5px 20px 15px 20px;
 }
 
 #filters, #sorting {
@@ -105,6 +241,7 @@ input {
     background-color: var(--footer);
 }
 
+/*Output Cards*/
 .card {
     border: none;
     border-radius: 5px;
@@ -150,7 +287,6 @@ input {
 #scroll-top:hover {
     background-color: var(--gray-hover);
 }
-
 
 #loading-bar-container {
     width: 100%;
@@ -253,17 +389,21 @@ input {
     width: 36px;
 }
 
+#sort-by{
+    width: 115px;
+}
+
 #rarity-filter option, #set-filter option, #type-filter option,  #artist-filter option, #holo-filter option, #count-filter option, #sort-by option{
     font-size: 12px;
 }
 
 button{
-    border: 2px solid var(--text);
+    border: 2px solid var(--border);
     border-radius: 30px;
     box-sizing: border-box;
     
     background-color: transparent;
-    color: var(--text);
+    color: #000;
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
@@ -408,9 +548,35 @@ footer a:hover{
         margin: 10px;
     }
 
+    .top-bar{
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+    }    
+
+    .searcher{
+        width: calc(100% - 25px);
+    }
+
+    .search-input-container{
+        width: calc(100% - 42px);
+    }
+
+    #searchQuery{
+        width: 100%;
+    }
+
     h1{
         font-size: 26px;
         margin-left: 15px;
+    }
+
+    .searcher{
+        margin-left: 15px;
+    }
+    
+    #pokemonDropdown{
+        width: calc(100% - 65px);
     }
 
     .btn{

@@ -21,12 +21,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>
-        <a href="https://github.com/JihunKimCode/Card-Storage-V2" class="btn btn-github" rel="noopener noreferrer" aria-label="GitHub Repository">
-            <i class="fa-brands fa-github"></i>
-        </a>
-        <a href="./index.html" rel="noopener noreferrer" aria-label="GitHub Repository">Pokémon Card Storage</a>
-    </h1>    
+    <div class="top-bar">
+        <h1>
+            <a href="https://github.com/JihunKimCode/Card-Storage-V2" class="btn btn-github" rel="noopener noreferrer" aria-label="GitHub Repository">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="./index.html" rel="noopener noreferrer" aria-label="GitHub Repository">Pokémon Card Storage</a>
+        </h1>
+        <div class="searcher">
+            <div class="search-input-container">
+                <input type="text" id="searchQuery" placeholder="Enter Card Name" oninput="toggleClearButton()" aria-label="Search Card Name">
+                <button id="clearButton" onclick="clearSearchQuery()" aria-label="Clear Search"><i class="fa fa-times"></i></button>
+            </div>
+            <button id="fetchButton" aria-label="Search"><i class="fa fa-search"></i></button>
+            <button id="randomButton" aria-label="RandomSearch"><i class="fa-solid fa-shuffle"></i></button>
+            <div id="pokemonDropdown"></div>
+        </div>
+    </div>    
     <div id="loading-bar-container">
         <div id="loading-bar"></div>
         <div id="loading-context">Waiting for CSV...</div>
