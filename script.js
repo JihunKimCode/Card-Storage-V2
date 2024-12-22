@@ -705,7 +705,11 @@ document.getElementById('fetchButton').addEventListener('click',()=>{
 });
 searchQuery.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-        if(pokemonNames.length > 0) applyFilters();     
+        if(pokemonNames.length > 0) applyFilters();
+        if(pokemonDropdown){
+            pokemonDropdown.innerHTML = '';
+            pokemonDropdown.style.display = 'none';
+        }
     }
 });
 
