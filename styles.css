@@ -5,6 +5,8 @@
     --border: #000;
     --button: #000;
     --button-icon: #fff;
+    --label-hov: #333333;
+    --label-act: #666666;
     --footer: #ccc;
     --gray-hover: #e2e2e2;
     --gray: #ccc;
@@ -25,6 +27,8 @@
     --border: #a6a6a6;
     --button: #fff;
     --button-icon: #000;
+    --label-hov: #dcdcdc;
+    --label-act: #c0c0c0;
     --footer: #a6a6a6;
     --gray-hover: #e2e2e2;
     --gray: #ccc;
@@ -87,6 +91,37 @@ h1{
 h1 a{
     text-decoration: none;
     color: var(--text);
+}
+
+/*Design File Input Button*/
+input[type="file"] {
+    display: none;
+}
+  
+.custom-file-upload {
+    border: none;
+    display: inline-flex;
+    padding: 8px;
+    cursor: pointer;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--text);
+    color: var(--background);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}  
+
+.custom-file-upload p{
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+}
+
+.custom-file-upload:hover{
+    background: var(--label-hov);
+}
+
+.custom-file-upload:active{
+    background: var(--label-act);
 }
 
 /*Search Bar*/
@@ -361,7 +396,7 @@ input {
     color: var(--gray);
 }
 
-#rarity-filter, #set-filter, #type-filter, #artist-filter, #holo-filter, #count-filter, #sort-by, #order-toggle, #visibleButton, #statsButton{
+.filter, .sort{
     padding: 7px;    
     background: var(--white);
     color: var(--black);
@@ -381,7 +416,7 @@ input {
     transition: height .4s ease;
 }
 
-#rarity-filter, #set-filter, #type-filter, #artist-filter, #holo-filter, #count-filter{
+.filter{
     width: 90px;
 }
 
@@ -393,38 +428,16 @@ input {
     width: 115px;
 }
 
-#rarity-filter option, #set-filter option, #type-filter option,  #artist-filter option, #holo-filter option, #count-filter option, #sort-by option{
+.filter option #sort-by option{
     font-size: 12px;
 }
 
-button{
-    border: 2px solid var(--border);
-    border-radius: 30px;
-    box-sizing: border-box;
-    
-    background-color: transparent;
-    color: #000;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    margin: 0px;
-    
-    height: 35px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    transition: all 0.3s;
-    display: inline-block;
-}
-
 button:hover{
-    color: var(--buttonhov);
-    background-color: var(--text);
     box-shadow: 0 10px 10px 0 rgba(0,0,0,0.2),0 10px 10px 0 rgba(0,0,0,0.2);
     transform: translateY(-2px);
 }
 
-button:active {
+button:active{
     box-shadow: none;
     transform: translateY(0);
 }
@@ -556,6 +569,7 @@ footer a:hover{
 
     .searcher{
         width: calc(100% - 25px);
+        margin-left: 15px;
     }
 
     .search-input-container{
@@ -570,10 +584,6 @@ footer a:hover{
         font-size: 26px;
         margin-left: 15px;
     }
-
-    .searcher{
-        margin-left: 15px;
-    }
     
     #pokemonDropdown{
         width: calc(100% - 65px);
@@ -583,6 +593,10 @@ footer a:hover{
         padding: 4px;
     }
 
+    #alert{
+        margin-left: 15px;
+    }
+    
     #card-container{
         width: 100%;
         grid-template-columns: repeat(auto-fill, minmax(49%, 1fr));
@@ -602,8 +616,8 @@ footer a:hover{
         margin-left: 15px;
     }
     
-    #rarity-filter, #set-filter, #type-filter, #artist-filter, #holo-filter, #count-filter, #sort-by, #order-toggle, #visibleButton, #statsButton{
-        width: 100%;
+    .filter, .sort{
+        width: 100% !important;
     }
 
     #filters{

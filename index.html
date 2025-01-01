@@ -45,29 +45,29 @@
 
     <div id="controls">
         <div id="filters">
-            <select id="set-filter">
+            <select id="set-filter" class="filter">
                 <option value="">🔍Set</option>
             </select>
-            <select id="rarity-filter">
+            <select id="rarity-filter" class="filter">
                 <option value="">🔍Rarity</option>
             </select>
-            <select id="artist-filter">
+            <select id="artist-filter" class="filter">
                 <option value="">🔍Artist</option>
             </select>
-            <select id="type-filter">
+            <select id="type-filter" class="filter">
                 <option value="">🔍Type</option>
             </select>        
-            <select id="holo-filter">
+            <select id="holo-filter" class="filter">
                 <!-- <option value="">🔍Foil</option> -->
             </select>
-            <select id="count-filter">
+            <select id="count-filter" class="filter">
                 <option value="">🔍Count</option>
             </select>                                
         </div>
         <div id="sorting">
-            <button id="statsButton" title="Show card stats"><i class="fa-solid fa-chart-column"></i></button>
-            <button id="visibleButton" title="Toggle card info"><i class="fa-solid fa-eye"></i></button>
-            <select id="sort-by">
+            <button id="statsButton" class="sort" title="Show card stats"><i class="fa-solid fa-chart-column"></i></button>
+            <button id="visibleButton" class="sort" title="Toggle card info"><i class="fa-solid fa-eye"></i></button>
+            <select id="sort-by" class="sort">
                 <option value="">Sort By</option>
                 <option value="artist">Artist Name</option>
                 <option value="name">Card Name</option>
@@ -78,17 +78,21 @@
                 <option value="rarity">Rarity</option>
                 <option value="type">Type</option>
             </select>
-            <button id="order-toggle" title="Toggle sort order"><i class="fa-solid fa-arrow-down-short-wide"></i></button>
+            <button id="order-toggle" class="sort" title="Toggle sort order"><i class="fa-solid fa-arrow-down-short-wide"></i></button>
         </div>
     </div>
 
     <div id="alert">
-        <input type="file" id="file-input" accept=".csv" onchange="handleFileUpload(event)">
-        <p>
-            <li><b><a href="https://github.com/JihunKimCode/Card-Storage-V2/blob/main/pokemon_cards_v2.csv" rel="noopener noreferrer" aria-label="pokemon_cards.csv" target="_blank">Template CSV</a></b></li>
-            <li>CSV must have a <b>Set Name and Number</b> for each card.</li>
-            <li>You can customize or remove the <b>Foil column</b> of the template as you like.</li>
-        </p>
+        <div class="uploadCSV">
+            <label for="file-input" class="custom-file-upload">
+                <i class="fa-solid fa-upload"></i>
+                <p><b>Upload CSV</b></p>
+            </label>
+            <input type="file" id="file-input" accept=".csv" onchange="handleFileUpload(event)">
+        </div>
+        <li><b><a href="https://github.com/JihunKimCode/Card-Storage-V2/blob/main/pokemon_cards_v2.csv" rel="noopener noreferrer" aria-label="pokemon_cards.csv" target="_blank">Template CSV</a></b></li>
+        <li>Each card in the CSV must include a <b>Set Name and Number</b>.</li>
+        <li>Customize or remove the <b>Foil column</b> of the template as needed.</li>
     </div>
     <div id="card-container"></div>
     <div id="statsModal" class="modal">
