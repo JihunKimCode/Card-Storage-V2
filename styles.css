@@ -5,8 +5,6 @@
     --border: #000;
     --button: #000;
     --button-icon: #fff;
-    --label-hov: #333333;
-    --label-act: #666666;
     --footer: #ccc;
     --gray-hover: #e2e2e2;
     --gray: #ccc;
@@ -27,8 +25,6 @@
     --border: #a6a6a6;
     --button: #fff;
     --button-icon: #000;
-    --label-hov: #dcdcdc;
-    --label-act: #c0c0c0;
     --footer: #a6a6a6;
     --gray-hover: #e2e2e2;
     --gray: #ccc;
@@ -117,11 +113,11 @@ input[type="file"] {
 }
 
 .custom-file-upload:hover{
-    background: var(--label-hov);
+    color: var(--gray);
 }
 
 .custom-file-upload:active{
-    background: var(--label-act);
+    background: var(--dark-gray);
 }
 
 /*Search Bar*/
