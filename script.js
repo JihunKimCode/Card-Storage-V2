@@ -422,7 +422,11 @@ async function findCardBySetAndNumber(set, number, cardsDeck) {
     for (const setId of setIds) {
         const id = `${setId}${prefix}-${number}`;
         card = cardsDeck.find(c => c.id === id && (c.set.name === set || c.set.name.includes(set)));
-
+        if (!card){
+            // Some Expansion does not need prefix
+            const id = `${setId}-${number}`;
+            card = cardsDeck.find(c => c.id === id && (c.set.name === set || c.set.name.includes(set)));    
+        }
         if (card) return card;
     }
 
