@@ -530,10 +530,10 @@ function createCardElement(card) {
     }
 
     // Add count to the card name if count is more than 1
-    const countText = card.count > 1 ? ` (${card.count})` : '';
     const isVisible = document.querySelector('#visibleButton i').classList.contains('fa-eye');
 
     cardDiv.innerHTML = `
+        ${card.count > 1 ? `<div class="count-badge">${card.count}</div>` : ""}
         <img src="${card.images.small}" alt="${card.name}" title="${card.name}" onclick="showPopup('${card.images.large}', '${card.name.replace(/'/g, '’')}')" style="cursor: zoom-in">
         <div class="cardInfo" style="display: ${isVisible ? 'block' : 'none'};">
             <a href="https://jihunkimcode.github.io/Pokemon-Card-Searcher/?searchMode=setList&searchQuery=${encodeURIComponent(card.set.name)}&sortOrder=newest&supertypeFilter=&rarityFilter=" target="_blank">
@@ -541,7 +541,7 @@ function createCardElement(card) {
             </a>    
             <p>
                 <a href="https://jihunkimcode.github.io/Pokemon-Card-Searcher/?searchMode=pokemonName&searchQuery=${encodeURIComponent(card.name)}&sortOrder=newest&supertypeFilter=&rarityFilter=" target="_blank">
-                    <b>${card.name}${holoSymbol}${countText}</b>
+                    <b>${card.name}${holoSymbol}</b>
                 </a>
             </p>
             <p><i>Illus. ${

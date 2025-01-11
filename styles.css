@@ -267,6 +267,26 @@ input {
     background-color: var(--footer);
 }
 
+.count-badge{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    border: 2px solid white;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: default;
+    user-select: none;
+    font-weight: bold;
+    z-index: 1;
+}
+
 /*Output Cards*/
 .card {
     border: none;
@@ -274,6 +294,7 @@ input {
     background-color: var(--background);
     text-align: center;
     width: 200px;
+    position: relative;
 }
 
 .card img {
