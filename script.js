@@ -533,7 +533,10 @@ function createCardElement(card) {
     const isVisible = document.querySelector('#visibleButton i').classList.contains('fa-eye');
 
     cardDiv.innerHTML = `
-        ${card.count > 1 ? `<div class="count-badge">${card.count}</div>` : ""}
+        <div class="card-badges">
+            ${card.count > 1 ? `<div class="count-badge">${card.count}</div>` : ""}
+            ${holoSymbol != '' ? `<div class="holo-badge" title=${card.foil}>${holoSymbol}</div>` : ""}
+        </div>
         <img src="${card.images.small}" alt="${card.name}" title="${card.name}" onclick="showPopup('${card.images.large}', '${card.name.replace(/'/g, '’')}')" style="cursor: zoom-in">
         <div class="cardInfo" style="display: ${isVisible ? 'block' : 'none'};">
             <a href="https://jihunkimcode.github.io/Pokemon-Card-Searcher/?searchMode=setList&searchQuery=${encodeURIComponent(card.set.name)}&sortOrder=newest&supertypeFilter=&rarityFilter=" target="_blank">
@@ -541,7 +544,7 @@ function createCardElement(card) {
             </a>    
             <p>
                 <a href="https://jihunkimcode.github.io/Pokemon-Card-Searcher/?searchMode=pokemonName&searchQuery=${encodeURIComponent(card.name)}&sortOrder=newest&supertypeFilter=&rarityFilter=" target="_blank">
-                    <b>${card.name}${holoSymbol}</b>
+                    <b>${card.name}</b>
                 </a>
             </p>
             <p><i>Illus. ${

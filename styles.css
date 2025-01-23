@@ -268,10 +268,33 @@ input {
     background-color: var(--footer);
 }
 
-.count-badge{
+.card-badges {
     position: absolute;
+    display: inline-flex;
+    align-items: center;
     top: 5px;
     left: 5px;
+    gap: 2px;
+}
+
+.holo-badge {
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    border: 2px solid white;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: default;
+    user-select: none;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.count-badge {
     background: #000;
     color: #fff;
     border-radius: 50%;
