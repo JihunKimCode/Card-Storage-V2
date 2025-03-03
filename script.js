@@ -354,26 +354,37 @@ async function fetchAllSets() {
     const fetchIterator = validSets.map(async (set) => {
         const formattedSetName = set.replace(/\s/g, '.');
         try {
-            const response = await fetch(`${apiUrl}cards?q=set.name:${formattedSetName}`);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch data for set: ${set}. Status: ${response.status}`);
+            let currentPage = 1;
+            let hasMoreData = true;
+            setNameToIdMap[set] = setNameToIdMap[set] || []; // Ensure array initialization
+            let allCards = [];
+        
+            // Handle special case for "151"
+            const queryUrl = formattedSetName === "151"
+                ? `${apiUrl}cards?q=set.id:sv3pt5`
+                : `${apiUrl}cards?q=set.name:${formattedSetName}`;
+        
+            while (hasMoreData) {
+                const response = await fetch(`${queryUrl}&page=${currentPage}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data for set: ${set}. Status: ${response.status}`);
+                }
+                
+                const { data } = await response.json();
+                if (data.length === 0) {
+                    hasMoreData = false; // Stop fetching if no more data
+                } else {
+                    allCards.push(...data); // Store fetched cards
+                    data.forEach(item => {
+                        const setId = item.set.id;
+                        if (!setNameToIdMap[set].includes(setId)) {
+                            setNameToIdMap[set].push(setId);
+                        }
+                    });
+                    currentPage++;
+                }
             }
-            const data = await response.json();
-
-            if (data.data && data.data.length > 0) {
-                // Iterate over all items to collect all unique set IDs for the set name
-                data.data.forEach(item => {
-                    const setId = item.set.id;
-                    
-                    // Initialize an array for this set name if it doesn't already exist
-                    if (!setNameToIdMap[set]) setNameToIdMap[set] = [];
-
-                    // Add the setId to the array if it's not already included
-                    if (!setNameToIdMap[set].includes(setId)) setNameToIdMap[set].push(setId);
-                });
-            }
-
-            return data.data;
+            return allCards;
         } catch (error) {
             console.error(error);
             return []; // Return an empty array on error
