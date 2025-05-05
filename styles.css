@@ -105,6 +105,7 @@ input[type="file"] {
     color: var(--background);
     border-radius: 5px;
     margin-bottom: 10px;
+    user-select: none;
 }  
 
 .custom-file-upload p{
@@ -138,6 +139,7 @@ input[type="file"] {
 #searchQuery, #clearButton, #fetchButton, #randomButton {
     height: 36px;
     box-sizing: border-box;
+    user-select: none;
 }
 
 input[type="text"]{
@@ -384,6 +386,7 @@ input {
     margin-right: 4px;
     font-size: 12px;
     color: var(--text);
+    user-select: none;
 }
 
 #card-container {
@@ -450,6 +453,7 @@ input {
     overflow: hidden;
     height: 36px;
     transition: height .4s ease;
+    user-select: none;
 }
 
 .filter{
