@@ -295,24 +295,45 @@ function handleFileUpload(event) {
     }
 }
 
-// Allow hex input using URL query
+// Allow decoded input using URL query
 window.addEventListener('DOMContentLoaded', () => {
-    // Get the query string without the "?" prefix
-    const hexString = window.location.search.slice(1);
-
-    if (hexString && hexString.length > 0) {
-        try {
-            const file = hexToUtf8(hexString);
-            fetchCSVData(file, 'string').then(data => {
-                csvData = data;
-                document.getElementById('alert').style.display = 'none';
-                fetchAllSets();
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    const query = window.location.search.slice(1);
+    if (query && query.length > 0) handleTextInput(query);
 });
+
+// Show/Hide Text Entry
+function toggleTextEntry() {
+    const entry = document.getElementById('textEntry');
+    if (entry.style.display === 'none' || entry.style.display === '') {
+        entry.style.display = 'inline-flex';
+    } else {
+        entry.style.display = 'none';
+    }
+}
+
+// Decode text into CSV
+function handleTextInput(query){
+    try {
+        let file;
+
+        // Check how CSV was encoded
+        if (isHex(query)) file = hexToUtf8(query);
+        else file = base64ToUtf8(query);
+
+        fetchCSVData(file, 'string').then(data => {
+            csvData = data;
+            document.getElementById('alert').style.display = 'none';
+            fetchAllSets();
+        });
+    } catch (error) {
+        console.error("Decoding error:", error);
+    }
+}
+
+// Heuristic to check if string is likely hex
+function isHex(str) {
+    return /^[0-9a-fA-F]+$/.test(str) && str.length % 2 === 0;
+}
 
 // Decode hex
 function hexToUtf8(hex) {
@@ -320,6 +341,16 @@ function hexToUtf8(hex) {
     if (cleanHex.length % 2 !== 0) throw new Error("Invalid hex length");
     const bytes = new Uint8Array(cleanHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
     return new TextDecoder().decode(bytes);
+}
+
+// Decode Base64
+function base64ToUtf8(base64) {
+    try {
+        const decoded = atob(base64);
+        return decodeURIComponent(escape(decoded));
+    } catch (e) {
+        throw new Error("Invalid Base64 string");
+    }
 }
 
 // Take CSV data

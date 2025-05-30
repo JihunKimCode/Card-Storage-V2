@@ -90,6 +90,18 @@
             </label>
             <input type="file" id="file-input" accept=".csv" onchange="handleFileUpload(event)">
         </div>
+        <div class="typeCSV">
+            <label for="text-input" class="custom-file-upload" onclick="toggleTextEntry()">
+                <i class="fa-solid fa-keyboard"></i>
+                <p><b>Open Text Entry</b></p>
+            </label>
+            <div id="textEntry">
+                <textarea id="text-input" placeholder="Paste hex-encoded or base64-encoded CSV here..."></textarea>
+                <button id="decode-text" onclick="handleTextInput(document.getElementById('text-input').value.trim())" class="custom-file-upload">
+                    <i class="fa-solid fa-file-csv"></i> <p><b>Decode CSV</b></p>
+                </button>
+            </div>
+        </div>
         <li><b><a href="https://github.com/JihunKimCode/Card-Storage-V2/blob/main/pokemon_cards_v2.csv" rel="noopener noreferrer" aria-label="pokemon_cards.csv" target="_blank">Template CSV</a></b></li>
         <li>Each card in the CSV must include a <b>Set Name and Number</b>.</li>
         <li>Customize or remove the <b>Foil column</b> of the template as needed.</li>

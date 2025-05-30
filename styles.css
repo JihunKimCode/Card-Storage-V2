@@ -98,6 +98,8 @@ input[type="file"] {
     border: none;
     display: inline-flex;
     padding: 8px;
+    width: fit-content;
+    font-size: 16px;
     cursor: pointer;
     align-items: center;
     gap: 10px;
@@ -119,6 +121,34 @@ input[type="file"] {
 
 .custom-file-upload:active{
     background: var(--dark-gray);
+}
+
+/*Design Text Entry*/
+.typeCSV{
+    display: inline-flex;
+    flex-direction: column;
+}
+
+#textEntry{
+    display: none;
+    align-items: flex-start;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+textarea {
+    width: 500px;
+    height: 35px;
+    padding: 5px;
+    box-sizing: border-box;
+    border: 2px solid #000;
+    border-radius: 4px;
+    background-color: var(--background);
+    font-size: 16px;
+}
+
+#decode-text{
+    height: 35px;
 }
 
 /*Search Bar*/
@@ -592,6 +622,9 @@ footer a:hover{
     #controls {
         justify-content: flex-end;
     }    
+    textarea{
+        width: 100%;
+    }
 }
 
 @media only screen and (max-width: 620px) {
@@ -606,6 +639,10 @@ footer a:hover{
         justify-content: space-between;
         align-items: flex-start;
     }    
+
+    textarea{
+        width: 100%;
+    }
 
     .searcher{
         width: calc(100% - 25px);
