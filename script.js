@@ -295,11 +295,45 @@ function handleFileUpload(event) {
     }
 }
 
+// Allow hex input using URL query
+window.addEventListener('DOMContentLoaded', () => {
+    // Get the query string without the "?" prefix
+    const hexString = window.location.search.slice(1);
+
+    if (hexString && hexString.length > 0) {
+        try {
+            const file = hexToUtf8(hexString);
+            fetchCSVData(file, 'string').then(data => {
+                csvData = data;
+                document.getElementById('alert').style.display = 'none';
+                fetchAllSets();
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+});
+
+// Decode hex
+function hexToUtf8(hex) {
+    const cleanHex = hex.replace(/[^0-9a-fA-F]/g, '');
+    if (cleanHex.length % 2 !== 0) throw new Error("Invalid hex length");
+    const bytes = new Uint8Array(cleanHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+    return new TextDecoder().decode(bytes);
+}
+
 // Take CSV data
-async function fetchCSVData(file) {
+async function fetchCSVData(data, format='file') {
     try {
-        const data = await file.text();
-        const lines = data.split('\n').filter(line => line.trim()); // Filter out empty lines
+        let lines;
+        if (format === 'file') {
+            const text = await data.text();
+            lines = text.split('\n').filter(line => line.trim());
+        } else if (format === 'string') {
+            lines = data.trim().split(/\r?\n/).filter(line => line.trim());
+        } else {
+            throw new Error(`Unsupported data format: ${format}`);
+        }
 
         // Check if the header has all the required columns
         header = lines[0].split(',').map(column => column.trim()); // Trim whitespace
