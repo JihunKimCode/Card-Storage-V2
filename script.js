@@ -304,10 +304,14 @@ window.addEventListener('DOMContentLoaded', () => {
 // Show/Hide Text Entry
 function toggleTextEntry() {
     const entry = document.getElementById('textEntry');
+    const toggleText = document.getElementById('toggleText');
+
     if (entry.style.display === 'none' || entry.style.display === '') {
         entry.style.display = 'inline-flex';
+        toggleText.innerHTML = '<b>Hide Text Entry</b>';
     } else {
         entry.style.display = 'none';
+        toggleText.innerHTML = '<b>Show Text Entry</b>';
     }
 }
 
