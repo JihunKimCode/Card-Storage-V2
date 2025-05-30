@@ -147,8 +147,14 @@ textarea {
     font-size: 16px;
 }
 
+#text-input{
+    font-family: "Roboto", sans-serif;
+}
+
 #decode-text{
     height: 35px;
+    box-shadow: none;
+    transform: translateY(0);
 }
 
 /*Search Bar*/
@@ -167,6 +173,7 @@ textarea {
 }
 
 #searchQuery, #clearButton, #fetchButton, #randomButton {
+    font-family: "Roboto", sans-serif;
     height: 36px;
     box-sizing: border-box;
     user-select: none;
