@@ -89,6 +89,11 @@ h1 a{
     color: var(--text);
 }
 
+.CSVBtns{
+    display: inline-flex;
+    gap: 5px;
+}
+
 /*Design File Input Button*/
 input[type="file"] {
     display: none;
@@ -102,7 +107,7 @@ input[type="file"] {
     font-size: 16px;
     cursor: pointer;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     background-color: var(--text);
     color: var(--background);
     border-radius: 5px;
@@ -127,6 +132,7 @@ input[type="file"] {
 .typeCSV{
     display: inline-flex;
     flex-direction: column;
+    width: 100%;
 }
 
 #textEntry{
@@ -628,9 +634,6 @@ footer a:hover{
 @media (min-width: 620px) and (max-width: 850px) {
     #controls {
         justify-content: flex-end;
-    }    
-    textarea{
-        width: 100%;
     }
 }
 
@@ -649,11 +652,12 @@ footer a:hover{
 
     textarea{
         width: 100%;
+        height: max-content;
     }
 
     .searcher{
-        width: calc(100% - 25px);
-        margin-left: 15px;
+        width: calc(100% - 20px);
+        margin-left: 10px;
     }
 
     .search-input-container{
@@ -666,7 +670,7 @@ footer a:hover{
 
     h1{
         font-size: 26px;
-        margin-left: 15px;
+        margin-left: 10px;
     }
     
     #pokemonDropdown{
@@ -678,7 +682,7 @@ footer a:hover{
     }
 
     #alert{
-        margin-left: 15px;
+        margin: 0px 10px;
     }
     
     #card-container{
@@ -697,7 +701,7 @@ footer a:hover{
     #controls {
         flex-direction: column;
         margin: 10px;
-        margin-left: 15px;
+        margin-bottom: 0px;
     }
     
     .filter, .sort{

@@ -83,18 +83,20 @@
     </div>
 
     <div id="alert">
-        <div class="uploadCSV">
-            <label for="file-input" class="custom-file-upload">
-                <i class="fa-solid fa-upload"></i>
-                <p><b>Upload CSV</b></p>
-            </label>
-            <input type="file" id="file-input" accept=".csv" onchange="handleFileUpload(event)">
-        </div>
         <div class="typeCSV">
-            <label for="text-input" class="custom-file-upload" onclick="toggleTextEntry()">
-                <i class="fa-solid fa-keyboard"></i>
-                <p id="toggleText"><b>Show Text Entry</b></p>
-            </label>
+            <div class="CSVBtns">
+                <label for="text-input" class="custom-file-upload" onclick="toggleTextEntry()">
+                    <i class="fa-solid fa-keyboard"></i>
+                    <p id="toggleText"><b>Show Text Entry</b></p>
+                </label>
+                <div class="uploadCSV">
+                    <label for="file-input" class="custom-file-upload">
+                        <i class="fa-solid fa-upload"></i>
+                        <p><b>Upload CSV</b></p>
+                    </label>
+                    <input type="file" id="file-input" accept=".csv" onchange="handleFileUpload(event)">
+                </div>
+            </div>
             <div id="textEntry">
                 <textarea id="text-input" placeholder="Paste hex-encoded or base64-encoded CSV here..."></textarea>
                 <button id="decode-text" onclick="handleTextInput(document.getElementById('text-input').value.trim())" class="custom-file-upload">
