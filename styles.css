@@ -191,7 +191,7 @@ input[type="text"]{
     font-size: 16px;
     color: #000;
     border: none;
-    width: 169px;
+    width: 170px;
     border-top: 2px solid var(--border);
     border-left: 2px solid var(--border);
     border-bottom: 2px solid var(--border);  
@@ -235,7 +235,7 @@ input[type="text"]{
 }
 
 #fetchButton, #randomButton{
-    width: 32px;
+    width: 36px;
     float: right;
     padding: 6px 0px;
     margin-right: 0px;
@@ -276,7 +276,7 @@ input[type="text"]{
     overflow-y: auto;
     z-index: 3;
     top: calc(100% - 2px); /* Position the dropdown below the search input */
-    width: 169px;
+    width: 170px;
     box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2);
 }
 
@@ -508,7 +508,7 @@ input {
 }
 
 #sort-by{
-    width: 115px;
+    width: 124px;
 }
 
 .filter option #sort-by option{
@@ -640,7 +640,7 @@ footer a:hover{
     color: var(--dark-gray);
 }
 
-@media (min-width: 620px) and (max-width: 850px) {
+@media (min-width: 620px) and (max-width: 871px) {
     #controls {
         justify-content: flex-end;
     }
